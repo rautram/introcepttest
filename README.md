@@ -17,31 +17,31 @@ You can use react-native-android-fragment repo to do that or you can use Android
 1.) Make a Fragment class called ReactFragment.java
 
     import android.annotation.TargetApi;
-import android.app.Activity;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+    import android.app.Activity;
+    import android.os.Build;
+    import android.os.Bundle;
+    import android.view.KeyEvent;
+    import android.view.LayoutInflater;
+    import android.view.View;
+    import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+    import androidx.annotation.NonNull;
+    import androidx.annotation.Nullable;
+    import androidx.fragment.app.Fragment;
 
-import com.facebook.infer.annotation.Assertions;
-import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactRootView;
-import com.facebook.react.common.LifecycleState;
-import com.facebook.react.devsupport.DoubleTapReloadRecognizer;
-import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
-import com.facebook.react.modules.core.PermissionAwareActivity;
-import com.facebook.react.modules.core.PermissionListener;
+    import com.facebook.infer.annotation.Assertions;
+    import com.facebook.react.ReactApplication;
+    import com.facebook.react.ReactInstanceManager;
+    import com.facebook.react.ReactNativeHost;
+    import com.facebook.react.ReactRootView;
+    import com.facebook.react.common.LifecycleState;
+    import com.facebook.react.devsupport.DoubleTapReloadRecognizer;
+    import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+    import com.facebook.react.modules.core.PermissionAwareActivity;
+    import com.facebook.react.modules.core.PermissionListener;
 
 
-public class ReactFragment extends Fragment implements PermissionAwareActivity {
+    public class ReactFragment extends Fragment implements PermissionAwareActivity {
 
     public static final String ARG_COMPONENT_NAME = "arg_component_name";
     public static final String ARG_LAUNCH_OPTIONS = "arg_launch_options";
@@ -249,7 +249,74 @@ public class ReactFragment extends Fragment implements PermissionAwareActivity {
         }
 
     }
-}
+    }
+ 
+ 
+ ### step 2: Change MainActivity or any other Activity so that it can take React Native component as an android Fragment.
+ 
+    import android.content.Intent;
+    import android.os.Bundle;
+    import android.view.KeyEvent;
+    import androidx.annotation.Nullable;
+    import androidx.fragment.app.Fragment;
+    import androidx.appcompat.app.AppCompatActivity;
+    import com.facebook.react.ReactActivity;
+    import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+    import com.introcepttest.fragment.ReactFragment;
+
+
+    public class MainActivity extends AppCompatActivity  implements DefaultHardwareBackBtnHandler {
+
+    private static final String COMPONENT_NAME = "main";
+
+      @Override
+      protected void onCreate(Bundle savedInstanceState) {
+
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.react_layout);
+
+    if (savedInstanceState == null) {
+      ReactFragment reactFragment = new ReactFragment.Builder(COMPONENT_NAME).build();
+      getSupportFragmentManager().beginTransaction().add(R.id.container_main, reactFragment).commit();
+    }
+
+  }
+
+      @Override
+      public void invokeDefaultOnBackPressed() {
+        super.onBackPressed();
+      }
+
+      /**
+       * Forward onKeyUp events to the ReactFragment in order to handle double tap
+       * reloads and dev menus
+       *
+       * @param keyCode
+       * @param event
+       * @return true if event was handled
+       */
+      @Override
+      public boolean onKeyUp(int keyCode, KeyEvent event) {
+        boolean handled = false;
+        Fragment activeFragment = getSupportFragmentManager().findFragmentById(R.id.container_main);
+        if (activeFragment instanceof ReactFragment) {
+          handled = ((ReactFragment) activeFragment).onKeyUp(keyCode, event);
+        }
+        return handled || super.onKeyUp(keyCode, event);
+      }
+
+
+      @Override
+      public void onBackPressed() {
+        super.onBackPressed();
+      }
+
+    }
+
+
+
+    
+
 
     
 

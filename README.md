@@ -312,6 +312,46 @@ You can use react-native-android-fragment repo to do that or you can use Android
       }
 
     }
+    
+  See the line.
+        private static final String COMPONENT_NAME = "main";
+  Here "main" is the name of the component registered through AppRegistry module of React Native.
+  
+  
+  ### Step 4: Declare other activities also in similar manner and if you want your activity to resolve a promise and listen an event or need some permissions you need to extend ReactActivity instead of AppCompatActivity.
+  
+  ### Step 4: Write Native Module to push or pop activities.
+  
+  You can find many tutorials in the internet describing how to write a native module. Here, I will only write how to go from one activity to another and get Back.
+  
+  ##### case 1: One activity to another: MainActivity -> FormActivity
+        @ReactMethod
+        public void goToForm( )
+        {
+          AppCompatActivity activity = (AppCompatActivity) getCurrentActivity;
+          Intent intent = new Intent(activity, FormActivity.class);
+          activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                activity.startActivity(intent);
+            }
+          });
+        }
+        
+ ##### case 2: Go Back from FormActivity
+ 
+     @ReactMethod
+        public void onBack()
+        {
+            AppCompatActivity reactActivity = (AppCompatActivity) getCurrentActivity();
+            reactActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    reactActivity.onBackPressed();
+                }
+            });
+        }
+
 
 
 

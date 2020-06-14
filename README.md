@@ -8,7 +8,7 @@ In this app I have declared only two activities i.e MainActivity and FormActivit
 
 ## Why this Custom Android approach
 
-Navigation is always an issue in React Native. Multiple Activities exist in android for a reason and I want to experiment how it feels to build an app using best part of both Android and React Native. Much to my suprise it has worked exceptionally well and my apps are getting native look and feel while the users are navigating. Using this approach I have successfully build the top tabs and bottom tabs and currently experimenting with shared screen transition. This is not ideal for production as it requires android knowledge and you need to write code in two differenet language but these kind of experimente are fun.
+Navigation is always an issue in React Native. Multiple Activities exist in android for a reason and I want to experiment how it feels to build an app using best part of both Android and React Native. Much to my suprise it has worked exceptionally well and my apps are getting native look and feel while the users are navigating. Using this approach I have successfully build the top tabs and bottom tabs and currently experimenting with shared screen transition. This is not ideal for production as it requires android knowledge and you need to write code in two differenet language but these kind of experimente are fun.And this approach is best if you native android app and you want to leverage react native component in some of the UI parts of your app.
 
 ## How to insert React Native View as and Android fragment.
 
